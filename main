@@ -1,1 +1,99 @@
+# Company name: AutoCountry
+# Create a program called: CarFinder
+# Convert allowedVehiclesList from List to an Array (OLD)
+# Update ADD and DELETE functionality to update the file versus the Array (OLD)
+# *Convert EVENTS in menu to functions*
+# *Function to PRINT all Authorized Vehicles*
+# *Function to SEARCH for Authorized Vehicle*
+# *Function to ADD Authorized Vehicle*
+# *Function to DELETE Authorized Vehicle*
 
+import os
+
+filePath = "authorizedVehiclesList.txt"
+
+def vehiclesFile():
+
+  """The vehicles will now load from the file into a list"""
+  if not os.path.exists(filePath):
+    with open(filePath, "w") as file:
+      file.write("\n".join(["Ford F-150", "Chevrolet Silverado", "Tesla CyberTruck", "Toyota Tundra", "Rivian R1T", "Ram 1500"]))                       
+  with open(filePath, "r") as file:
+    return [line.strip() for line in file.readlines()]
+
+def vehicleSave(vehicles):
+
+  """This will save the vehicles list back to the file"""
+  with open(filePath, "w") as file:
+    file.write("\n".join(vehicles))
+
+def printVehicles(allowedVehiclesList):
+  
+  """Print Vehicles List"""
+  print("\nThe AutoCountry sales manager has authorized the purchase and selling of the following vehicles:")
+  for vehicle in allowedVehiclesList:
+    print(vehicle)
+
+def searchVehicles(allowedVehiclesList):
+
+  """Search Vehicles List for a car"""
+  searchVehicles = input("Please enter the full Vehicle name: ")
+  if searchVehicles in allowedVehiclesList:
+    print(f"{searchVehicles} is an authorized vehicle")
+  else:
+    print(f"\n{searchVehicles} is not an authorized vehicle, if you received this in error please check the spelling and try again")
+    
+def addVehicles(allowedVehiclesList):
+
+  """Adds new vehicle to allowedVehiclesList"""
+  newVehicle = input("Please Enter the full Vehicle name you would like to add: ")
+  allowedVehiclesList.append(newVehicle)
+  vehicleSave(allowedVehiclesList)
+  print(f'\nYou have added "{newVehicle}" as an authorized vehicle')
+    
+def deleteVehicle(allowedVehiclesList):
+
+  """Deletes vehicle from allowedVehiclesList"""
+  deleteVehicle = input("Please Enter the full Vehicle name you would like to REMOVE: ")
+  if deleteVehicle in allowedVehiclesList:
+    confirm = input(f'\nAre you sure you want to remove "{deleteVehicle}" from the Authorized Vehicles List?')
+    if confirm == "yes":
+      allowedVehiclesList.remove(deleteVehicle)
+      vehicleSave(allowedVehiclesList)
+      print(f'You have REMOVED "{deleteVehicle}" as an authorized vehicle')
+  
+def main():
+
+  allowedVehiclesList = vehiclesFile()
+
+  while True:
+    print ("********************************")
+    print ("AutoCountry Vehicle Finder v0.6")
+    print ("********************************")
+    print("Please Enter the following number below from the following menu: ")
+    print ("\n1. PRINT all Authorized Vehicles")
+    print ("2. SEARCH for Authorized Vehicle")
+    print ("3. ADD Authorized vehicle")
+    print ("4. DELETE Authorized vehicle")
+    print ("5. Exit")
+    print ("********************************")
+    userInput = input("Enter selection: ")
+
+    if userInput == "1":
+      printVehicles(allowedVehiclesList)
+
+    elif userInput == "2":
+      searchVehicles(allowedVehiclesList)
+
+    elif userInput == "3":
+      addVehicles(allowedVehiclesList)
+
+    elif userInput == "4":
+      deleteVehicle(allowedVehiclesList)
+
+    elif userInput == "5":
+      print("\nThank you for using the AutoCountry Vehicle Finder, good-bye!")
+      break
+
+if __name__ == "__main__":
+  main()
